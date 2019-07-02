@@ -4,6 +4,9 @@ import os
 from flask import Flask, request, send_from_directory
 from flask_restful import reqparse, Api, Resource
 from os.path import dirname, realpath
+from string import punctuation
+from nltk.corpus import stopwords
+import json
 
 UPLOAD_FOLDER = dirname(realpath(__file__)) + '/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -18,21 +21,50 @@ parser.add_argument('pdfFile')
 
 def textHighlight(filename):
     doc = fitz.open(UPLOAD_FOLDER + "/" + filename)
-    page = doc[0]
 
-    text = "more"
-    text_instances = page.searchFor(text)
+    coordinationArray = []
+    pageNum = 0
+
+    for page in doc:
+        allText = page.getText()
+
+        puncRemovedText = " ".join(removePunctuation(i) for i in allText.split())
+        stopWordsRemovedTextList = removeStopWords(puncRemovedText.split())
+        cleanedText = removeNumbers(stopWordsRemovedTextList)
+        uniqueWords = list(set(cleanedText))
+
+        textCoordinateArray = []
+
+        for word in uniqueWords:
+            text_instances = page.searchFor(word, 30, False)
+            textCoordinateArray.append({"word": word, "coordinates": text_instances})
+        pageNum += 1
+        coordinationArray.append({"page": pageNum, "wordsWithCoordinates": textCoordinateArray})
 
     ### HIGHLIGHT
 
-    for inst in text_instances:
-        highlight = page.addHighlightAnnot(inst)
-        highlight.setColors({"stroke": (1, 0, 0), "fill": (0.75, 0.8, 0.95)})
-        highlight.update()
-
-    doc.save(os.path.join(app.config['UPLOAD_FOLDER'], 'highlighted.pdf'))
+    #     for inst in text_instances:
+    #         highlight = page.addHighlightAnnot(inst)
+    #         highlight.setColors({"stroke": (1, 0, 0), "fill": (0.75, 0.8, 0.95)})
+    #         highlight.update()
+    #
+    # doc.save(os.path.join(app.config['UPLOAD_FOLDER'], 'highlighted.pdf'))
 
     return send_from_directory(directory=app.config['UPLOAD_FOLDER'], filename='highlighted.pdf')
+    # return {'success': 'true'}
+
+
+def removePunctuation(strval):
+    return "".join(" " if i in punctuation else i for i in strval.strip(punctuation))
+
+
+def removeStopWords(word_list):
+    filtered_words = [word for word in word_list if word.lower() not in stopwords.words('english')]
+    return filtered_words
+
+
+def removeNumbers(word_list):
+    return [word for word in word_list if word.isdigit() != True]
 
 
 class pdfTextHighlighter(Resource):
