@@ -8,6 +8,8 @@ from string import punctuation
 from nltk.corpus import stopwords
 import json
 
+# https://pymupdf.readthedocs.io/en/latest/rect/
+
 UPLOAD_FOLDER = dirname(realpath(__file__)) + '/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
