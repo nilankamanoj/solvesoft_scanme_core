@@ -7,7 +7,7 @@ from os.path import dirname, realpath
 from string import punctuation
 from nltk.corpus import stopwords
 import json
-
+import * from personnameTest
 # https://pymupdf.readthedocs.io/en/latest/rect/
 
 UPLOAD_FOLDER = dirname(realpath(__file__)) + '/uploads'
@@ -20,6 +20,7 @@ api = Api(app)
 parser = reqparse.RequestParser()
 parser.add_argument('pdfFile')
 
+    
 
 def textHighlight(filename):
     doc = fitz.open(UPLOAD_FOLDER + "/" + filename)
@@ -30,27 +31,30 @@ def textHighlight(filename):
     for page in doc:
         allText = page.getText()
 
-        puncRemovedText = " ".join(removePunctuation(i) for i in allText.split())
-        stopWordsRemovedTextList = removeStopWords(puncRemovedText.split())
-        cleanedText = removeNumbers(stopWordsRemovedTextList)
-        uniqueWords = list(set(cleanedText))
+        # puncRemovedText = " ".join(removePunctuation(i) for i in allText.split())
+        # stopWordsRemovedTextList = removeStopWords(puncRemovedText.split())
+        # cleanedText = removeNumbers(stopWordsRemovedTextList)
+        # uniqueWords = list(set(cleanedText))
+        personNames = get_human_names(allText)
 
         textCoordinateArray = []
 
-        for word in uniqueWords:
-            text_instances = page.searchFor(word, 30, False)
-            textCoordinateArray.append({"word": word, "coordinates": text_instances})
-        pageNum += 1
-        coordinationArray.append({"page": pageNum, "wordsWithCoordinates": textCoordinateArray})
+        # for word in uniqueWords:
+        #     text_instances = page.searchFor(word, 30, False)
+        #     textCoordinateArray.append({"word": word, "coordinates": text_instances})
+        # pageNum += 1
+        # coordinationArray.append({"page": pageNum, "wordsWithCoordinates": textCoordinateArray})
+        for personName in personNames:
+            text_instances = page.searchFor(personName, 30, False)
 
     ### HIGHLIGHT
 
-    #     for inst in text_instances:
-    #         highlight = page.addHighlightAnnot(inst)
-    #         highlight.setColors({"stroke": (1, 0, 0), "fill": (0.75, 0.8, 0.95)})
-    #         highlight.update()
+            for inst in text_instances:
+                highlight = page.addHighlightAnnot(inst)
+                highlight.setColors({"stroke": (1, 0, 0), "fill": (102/255, 224/255, 255/255)})
+                highlight.update()
     #
-    # doc.save(os.path.join(app.config['UPLOAD_FOLDER'], 'highlighted.pdf'))
+    doc.save(os.path.join(app.config['UPLOAD_FOLDER'], 'highlighted.pdf'))
 
     return send_from_directory(directory=app.config['UPLOAD_FOLDER'], filename='highlighted.pdf')
     # return {'success': 'true'}
