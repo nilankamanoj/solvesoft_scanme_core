@@ -3,9 +3,9 @@ from nameparser.parser import HumanName
 from nltk.corpus import wordnet
 
 
-person_list = []
-person_names=person_list
+
 def get_human_names(text):
+    person_list = []
     tokens = nltk.tokenize.word_tokenize(text)
     pos = nltk.pos_tag(tokens)
     sentt = nltk.ne_chunk(pos, binary = False)
@@ -22,6 +22,7 @@ def get_human_names(text):
                 person_list.append(name[:-1])
             name = ''
         person = []
+    return person_list
 #     print (person_list)
 
 text = """
@@ -45,7 +46,7 @@ prices go up. And that’s exactly what is happening to BTC prices."
 """
 # nltk.download()
 
-names = get_human_names(text)
+# names = get_human_names(text)
 # for person in person_list:
 #     person_split = person.split(" ")
 #     for name in person_split:
@@ -55,4 +56,3 @@ names = get_human_names(text)
 #                 break
 
 # print(person_names)
-print(person_list)

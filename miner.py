@@ -6,10 +6,11 @@ from flask_restful import reqparse, Api, Resource
 from os.path import dirname, realpath
 from string import punctuation
 from nltk.corpus import stopwords
+import nltk
 import json
-import * from personnameTest
+from personnameTest import *
 # https://pymupdf.readthedocs.io/en/latest/rect/
-
+# nltk.download()
 UPLOAD_FOLDER = dirname(realpath(__file__)) + '/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
@@ -36,6 +37,7 @@ def textHighlight(filename):
         # cleanedText = removeNumbers(stopWordsRemovedTextList)
         # uniqueWords = list(set(cleanedText))
         personNames = get_human_names(allText)
+        print(personNames)
 
         textCoordinateArray = []
 
@@ -51,7 +53,7 @@ def textHighlight(filename):
 
             for inst in text_instances:
                 highlight = page.addHighlightAnnot(inst)
-                highlight.setColors({"stroke": (1, 0, 0), "fill": (102/255, 224/255, 255/255)})
+                highlight.setColors({"stroke": (102/255, 224/255, 255/255)})
                 highlight.update()
     #
     doc.save(os.path.join(app.config['UPLOAD_FOLDER'], 'highlighted.pdf'))
