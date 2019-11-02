@@ -67,6 +67,7 @@ create table level
     id           int auto_increment,
     name         varchar(255)                        not null,
     scheme_id    int                                 not null,
+    color        varchar(50)                         not null,
     description  varchar(255)                        not null,
     is_party     bool      default false             not null,
     created_time timestamp default current_timestamp not null,

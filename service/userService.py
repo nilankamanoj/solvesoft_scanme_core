@@ -1,5 +1,5 @@
 from model import db
-from model.User import User
+from model.user import User
 
 
 def get_users():

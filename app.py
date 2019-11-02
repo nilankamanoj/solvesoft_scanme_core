@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, session
 from flask_restful import reqparse
 
 from config import Configuration
@@ -13,6 +13,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('pdfFile')
 app.register_blueprint(user_controller, url_prefix='/user')
 app.register_blueprint(file_controller, url_prefix='/file')
+
 
 
 @app.route('/')
