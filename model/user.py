@@ -27,6 +27,9 @@ class User(db.Model):
             'role': self.role,
         }
 
+    def is_anonymous(self):
+        return False
+
     @staticmethod
     def generate_hash(password):
         return sha256.hash(password)

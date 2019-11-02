@@ -4,10 +4,13 @@ from model import db
 class Party(db.Model):
     __tablename__ = 'party'
     
-    id = db.column(db.Integer(11), primary_key=True)
-    party_level_id = db.column(db.ForeignKey(u'level.id', onupdate=u'CASCADE'))
-    include_level_id = db.column(db.ForeignKey(u'level.id', onupdate=u'CASCADE'), index=True)
-    created_time = db.column(db.Timestamp)
+    id = db.Column(db.Integer, primary_key=True)
+    party_level_id = db.Column(db.Integer)
+    include_level_id = db.Column(db.Integer)
 
-    include_level = db.relationship(u'Level', primaryjoin='Party.include_level_id == Level.id')
-    party_level = db.relationship(u'Level', primaryjoin='Party.party_level_id == Level.id')
+    def __init__(self, party_level_id, include_level_id):
+        self.party_level_id = party_level_id
+        self.include_level_id = include_level_id
+
+
+

@@ -185,3 +185,13 @@ create table violation
         foreign key (release_id) references document_release (id)
             on update cascade
 );
+
+insert into stream
+values (null, 'finance', 'basic financial data that could be sensitive.', null),
+       (null, 'health', 'health related data.', null),
+       (null, 'politics', 'sensitive political information.', null);
+
+insert into specific_sensitivity
+values (null, 'fraud', 1, 'fraud, finance crime and investigation related data.', null),
+       (null, 'salary', 1, 'employee salary and wages related data.', null),
+       (null, 'investments', 1, 'investment strategies of organization.', null);

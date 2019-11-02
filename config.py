@@ -8,3 +8,7 @@ class Configuration:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SESSION_TYPE = 'memcached'
     SECRET_KEY = 'super secret key'
+    JWT_HEADER_NAME = 'authToken'
+    JWT_SECRET_KEY = 'you will never guess me'
+    JWT_ENCODING_ALGORITHM = 'HS256'
+    JWT_LIFETIME = 3600 * 24 * 7
