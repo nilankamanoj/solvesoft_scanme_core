@@ -7,3 +7,7 @@
 /app.spec
 .idea
 /__pycache__/
+/controller/__pycache__/
+/model/__pycache__/
+/service/__pycache__/
+/util/__pycache__/
