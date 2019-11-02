@@ -1,6 +1,7 @@
 from model.stream import Stream
 from service import specificSensitivityService
 
+
 def get_streams():
     streams = Stream.query.all()
     for stream in streams:

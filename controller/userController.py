@@ -24,7 +24,10 @@ def get_one(id):
 @user_controller.route("/", methods=['POST'])
 def add():
     user = json.loads(request.data.decode('utf-8'))
-    return jsonify(userService.save_user(user).serialize())
+    u = userService.get_user_by_email(user['email'])
+    if u is None:
+        return jsonify(userService.save_user(user).serialize())
+    return 'duplicate email', 400
 
 
 @user_controller.route('/login', methods=['POST'])
@@ -32,5 +35,4 @@ def get_token():
     login_user = userService.login(request.form)
     if login_user is not None:
         return jsonify(login_manager.generate_jwt_token(login_user.id))
-    else:
-        return 'bad credentials', 401
+    return 'bad credentials', 401

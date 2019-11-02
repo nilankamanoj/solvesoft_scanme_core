@@ -12,8 +12,7 @@ def save_scheme():
     if schemeService.get_scheme_by_name(s['name']) is None:
         scheme = schemeService.save_scheme(s)
         return jsonify(schemeService.get_scheme(scheme.id).serialize())
-    else:
-        return "duplicate scheme name", 400
+    return "duplicate scheme name", 400
 
 
 @scheme_controller.route("/", methods=['GET'])

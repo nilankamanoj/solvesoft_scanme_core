@@ -47,6 +47,7 @@ def get_documents():
 def get_document(id):
     return Document.query.filter_by(id=id).first()
 
+
 def get_document_by_name(name):
     return Document.query.filter_by(name=name).first()
 

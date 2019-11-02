@@ -26,8 +26,7 @@ def create_file():
         return jsonify(
             {'data': fileService.extract_data(filename + '.pdf'), 'baseFileName': filename, 'version': 1,
              'documentId': document.id})
-    else:
-        return 'duplicate file name', 400
+    return 'duplicate file name', 400
 
 
 def random_string(string_length=20):

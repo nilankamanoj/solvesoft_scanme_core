@@ -11,5 +11,3 @@ def save_party_include_level(party):
 
 def get_include_party_by_party_level_id(party_level_id):
     return Party.query.filter_by(party_level_id=party_level_id).first()
-
-

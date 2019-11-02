@@ -6,9 +6,7 @@ class Document(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-    user_id = db.Column(db.ForeignKey(u'user.id', onupdate=u'CASCADE'), index=True)
-
-    user = db.relationship(u'User')
+    user_id = db.Column(db.Integer)
 
     def __init__(self, name, user_id):
         self.name = name
