@@ -22,7 +22,4 @@ def get_one(id):
 @user_controller.route("/", methods=['POST'])
 def add():
     user = json.loads(request.data.decode('utf-8'))
-    try:
-        return jsonify(userService.save_user(user).serialize())
-    except:
-        return "duplicate email", 400
+    return jsonify(userService.save_user(user).serialize())
