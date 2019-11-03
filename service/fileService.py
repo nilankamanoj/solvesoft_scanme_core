@@ -5,6 +5,7 @@ from flask import session
 from config import Configuration
 from model import db
 from model.document import Document
+from util.fileUtil import highlight_pdf
 from util.scanUtil import get_human_names
 
 tokenizer = nltk.data.load('tokenizers/punkt/PY3/english.pickle')
@@ -25,15 +26,9 @@ def extract_data(filename):
 
             if len(person_names) > 0:
                 data[page_num].get("sentences").append(
-                    {"id": str(page_num) + str(sentence_num), "text": sentence, "names": person_names, "stream": "",
-                     "spec": ""})
-
-                for personName in person_names:
-                    text_instances = page.searchFor(personName, 30, False)
-                    for inst in text_instances:
-                        highlight = page.addHighlightAnnot(inst)
-                        highlight.setColors({"stroke": (102 / 255, 224 / 255, 255 / 255)})
-                        highlight.update()
+                    {"id": str(page_num) + str(sentence_num), "text": sentence,
+                     "names": [{"checked": True, "data": pn} for pn in person_names], "stream": "",
+                     "spec": "", "checked": True})
             sentence_num += 1
         page_num += 1
 

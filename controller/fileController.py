@@ -2,10 +2,11 @@ import os
 import random
 import string
 
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, json, send_from_directory
 
 from config import Configuration
-from service import fileService
+from service import fileService, schemeService
+from util.fileUtil import highlight_pdf
 
 file_controller = Blueprint('file_controller', __name__)
 
@@ -23,10 +24,18 @@ def create_file():
         file = request.files['pdfFile']
         filename = random_string()
         file.save(os.path.join(Configuration.UPLOAD_FOLDER, filename + '.pdf'))
-        return jsonify(
-            {'data': fileService.extract_data(filename + '.pdf'), 'baseFileName': filename, 'version': 1,
-             'documentId': document.id})
+        data = {'data': fileService.extract_data(filename + '.pdf'), 'baseFileName': filename, 'version': 1,
+                'documentId': document.id, 'scheme': ''}
+        return jsonify(data)
     return 'duplicate file name', 400
+
+
+@file_controller.route('/highlight', methods=['POST'])
+def highlight():
+    data = json.loads(request.data.decode('utf-8'))
+    scheme = schemeService.get_scheme_by_name(data['scheme'])
+    highlight_pdf(data, scheme)
+    return send_from_directory(Configuration.UPLOAD_FOLDER, data['baseFileName'] + str(data['version']) + '.pdf')
 
 
 def random_string(string_length=20):
