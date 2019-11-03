@@ -1,19 +1,20 @@
 from flask import Blueprint
 from flask import request, json, jsonify
 
-from controller import login_manager
+from controller import admin, login_manager
 from service import userService
 
 user_controller = Blueprint('user_controller', __name__)
 
 
 @user_controller.route("/", methods=['GET'])
-@login_manager.jwt_required
+@admin
 def get_all():
     return jsonify([u.serialize() for u in userService.get_users()])
 
 
 @user_controller.route("/<int:id>", methods=['GET'])
+@admin
 def get_one(id):
     u = userService.get_user(id)
     if u is not None:
@@ -22,6 +23,7 @@ def get_one(id):
 
 
 @user_controller.route("/", methods=['POST'])
+@admin
 def add():
     user = json.loads(request.data.decode('utf-8'))
     u = userService.get_user_by_email(user['email'])

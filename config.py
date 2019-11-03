@@ -13,3 +13,5 @@ class Configuration:
     JWT_ENCODING_ALGORITHM = 'HS256'
     JWT_LIFETIME = 3600 * 24 * 7
 
+    AUTH_SKIP = True
+
