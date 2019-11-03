@@ -1,11 +1,10 @@
 import fitz
+import flask_jwtlogin as jwt
 import nltk
-from flask import session
 
 from config import Configuration
 from model import db
 from model.document import Document
-from util.fileUtil import highlight_pdf
 from util.scanUtil import get_human_names
 
 tokenizer = nltk.data.load('tokenizers/punkt/PY3/english.pickle')
@@ -48,7 +47,7 @@ def get_document_by_name(name):
 
 
 def save_document(document):
-    d = Document(document['name'], session['uid'])
+    d = Document(document['name'], jwt.current_user.id)
     db.session.add(d)
     db.session.commit()
     return d

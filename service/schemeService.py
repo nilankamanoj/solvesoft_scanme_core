@@ -1,4 +1,4 @@
-from flask import session
+import flask_jwtlogin as jwt
 
 from model import db
 from model.scheme import Scheme
@@ -6,7 +6,7 @@ from service import levelService
 
 
 def save_scheme(scheme):
-    s = Scheme(scheme['name'], session['uid'], scheme['description'], scheme['levels'])
+    s = Scheme(scheme['name'], jwt.current_user.id, scheme['description'], scheme['levels'])
     db.session.add(s)
     db.session.commit()
     for l in scheme['levels']:

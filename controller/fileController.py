@@ -15,10 +15,6 @@ file_controller = Blueprint('file_controller', __name__)
 @file_controller.route('/', methods=['POST'])
 @document_creator
 def create_file():
-    #################################################################
-    # for dev purpose:
-    session['uid'] = 1
-    #################################################################
     document = request.form
     tmp_document = fileService.get_document_by_name(document['name'])
     if tmp_document is None:

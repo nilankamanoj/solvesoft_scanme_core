@@ -4,6 +4,7 @@ import flask_jwtlogin as jwt
 from flask_jwtlogin import JWTLogin
 
 from config import Configuration
+from model.user import User
 from service import userService
 
 login_manager = JWTLogin()
@@ -16,6 +17,8 @@ def load_user(identifier):
 
 def admin(f):
     if Configuration.AUTH_SKIP:
+        jwt.current_user = User("", "", "", 0, True)
+        jwt.current_user.id = 1
         @wraps(f)
         def decorated_function(*args, **kwargs):
             return f(*args, **kwargs)
@@ -35,6 +38,8 @@ def admin(f):
 
 def privacy_officer(f):
     if Configuration.AUTH_SKIP:
+        jwt.current_user = User("", "", "", 0, True)
+        jwt.current_user.id = 1
         @wraps(f)
         def decorated_function(*args, **kwargs):
             return f(*args, **kwargs)
@@ -54,6 +59,8 @@ def privacy_officer(f):
 
 def document_creator(f):
     if Configuration.AUTH_SKIP:
+        jwt.current_user = User("", "", "", 0, True)
+        jwt.current_user.id = 1
         @wraps(f)
         def decorated_function(*args, **kwargs):
             return f(*args, **kwargs)
@@ -73,6 +80,8 @@ def document_creator(f):
 
 def privacy_officer_or_document_creator(f):
     if Configuration.AUTH_SKIP:
+        jwt.current_user = User("", "", "", 0, True)
+        jwt.current_user.id = 1
         @wraps(f)
         def decorated_function(*args, **kwargs):
             return f(*args, **kwargs)
