@@ -2,7 +2,7 @@ import os
 import random
 import string
 
-from flask import Blueprint, request, jsonify, session, json, send_from_directory
+from flask import Blueprint, request, jsonify, json, send_from_directory
 
 from config import Configuration
 from controller import document_creator
@@ -23,6 +23,7 @@ def create_file():
         filename = random_string()
         file.save(os.path.join(Configuration.UPLOAD_FOLDER, filename + '.pdf'))
         data = {'data': fileService.extract_data(filename + '.pdf'), 'baseFileName': filename, 'version': 1,
+                'current_version': 1,
                 'documentId': document.id, 'scheme': ''}
         return jsonify(data)
     return 'duplicate file name', 400

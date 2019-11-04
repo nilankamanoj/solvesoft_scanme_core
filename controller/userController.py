@@ -36,5 +36,6 @@ def add():
 def get_token():
     login_user = userService.login(request.form)
     if login_user is not None:
-        return jsonify(login_manager.generate_jwt_token(login_user.id))
+        return jsonify(
+            {'authToken': login_manager.generate_jwt_token(login_user.id)['authToken'], 'user': login_user.serialize()})
     return 'bad credentials', 401
