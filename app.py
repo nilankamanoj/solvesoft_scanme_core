@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template
 from flask_restful import reqparse
 
 from config import Configuration
@@ -9,7 +9,7 @@ from controller.streamController import stream_controller
 from controller.userController import user_controller
 from model import db
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', template_folder='frontend', static_folder='frontend')
 app.config.from_object(Configuration)
 db.init_app(app)
 login_manager.init_app(app)
@@ -23,8 +23,8 @@ app.register_blueprint(scheme_controller, url_prefix='/scheme')
 
 
 @app.route('/')
-def hello_world():
-    return jsonify({'user': '/user', 'file': '/file'})
+def projects():
+    return render_template("index.html")
 
 
 if __name__ == '__main__':
