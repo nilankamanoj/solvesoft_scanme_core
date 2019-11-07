@@ -13,7 +13,7 @@ def highlight_pdf(data, scheme):
     for page in doc:
         sentences = page_data[page_num]['sentences']
         for sentence in sentences:
-            if sentence['checked']:
+            if sentence['checked'] and colors[sentence['spec']] is not None:
                 highlight_phrase(sentence['text'], page, colors[sentence['spec']])
             else:
                 for name in sentence['names']:
