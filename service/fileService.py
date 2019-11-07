@@ -5,7 +5,7 @@ import nltk
 from config import Configuration
 from model import db
 from model.document import Document
-from util.scanUtil import get_human_names
+from util.scanUtil import get_human_names, get_emails
 
 tokenizer = nltk.data.load('tokenizers/punkt/PY3/english.pickle')
 
@@ -22,13 +22,19 @@ def extract_data(filename):
         sentence_num = 0
         for sentence in sentences:
             person_names = get_human_names(sentence)
-
+            sentence_emails = get_emails(sentence)
             if len(person_names) > 0:
                 data[page_num].get("sentences").append(
                     {"id": str(page_num) + str(sentence_num), "text": sentence,
-                     "names": [{"checked": True, "data": pn} for pn in person_names], "stream": "",
+                     "names": [{"checked": True, "data": pn} for pn in person_names],
+                     "emails": [{"checked": True, "data": em} for em in sentence_emails],
+                     "nics": [], "telephones": [], "stream": "",
                      "spec": "", "checked": True})
+            else:
+                data[page_num]["emails"] += [{'checked': True, 'data': em} for em in sentence_emails]
+
             sentence_num += 1
+
         page_num += 1
 
     return data

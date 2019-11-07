@@ -1,3 +1,5 @@
+import re
+
 import nltk
 
 
@@ -25,3 +27,11 @@ def get_human_names(text):
 def get_telephone_numbers(text):
     telephone_list = []
     return telephone_list
+
+
+def get_emails(text):
+    rgx = r'[\w\.-]+@[\w\.-]+'
+    print("test")
+    email_list = re.findall(rgx, text)
+    print(email_list)
+    return email_list

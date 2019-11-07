@@ -6,7 +6,6 @@ from config import Configuration
 
 
 def highlight_pdf(data, scheme):
-
     colors = re_arrange_scheme(scheme)
     doc = fitz.open(Configuration.UPLOAD_FOLDER + "/" + data['baseFileName'] + ".pdf")
     page_num = 0
@@ -20,6 +19,13 @@ def highlight_pdf(data, scheme):
                 for name in sentence['names']:
                     if name['checked']:
                         highlight_phrase(name['data'], page, '23,150,46')
+                for email in sentence['emails']:
+                    if email['checked']:
+                        highlight_phrase(email['data'], page, '204, 51, 255')
+
+        for email in page_data[page_num]['emails']:
+            if email['checked']:
+                highlight_phrase(email['data'], page, '204, 51, 255')
         page_num += 1
     doc.save(os.path.join(Configuration.UPLOAD_FOLDER, data['baseFileName'] + str(data['version']) + '.pdf'))
 
