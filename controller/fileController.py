@@ -34,7 +34,8 @@ def create_file():
 def highlight():
     data = json.loads(request.data.decode('utf-8'))
     scheme = schemeService.get_scheme_by_name(data['scheme'])
-    highlight_pdf(data, scheme)
+    if data['current_version'] > data['version']:
+        highlight_pdf(data, scheme)
     return send_from_directory(Configuration.UPLOAD_FOLDER, data['baseFileName'] + str(data['version']) + '.pdf')
 
 
