@@ -14,5 +14,6 @@ class SpecificSensitivity(db.Model):
         return {
             'name': self.name,
             'stream_id': self.stream_id,
-            'description': self.description
+            'description': self.description,
+            'id':self.id
         }

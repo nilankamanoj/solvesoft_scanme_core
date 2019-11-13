@@ -3,12 +3,12 @@
 
     // Navbar
     .navbar-top {
-        position: absolute;
+        position: sticky;
         left: 0;
         top: 0;
         width: 100%;
-        z-index: 1;
-        background-color: transparent;
+        z-index: 1005;
+        background-color: teal;
         padding-left: 0 !important;
         padding-right: 0 !important;
     }

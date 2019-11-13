@@ -13,3 +13,4 @@
 /util/__pycache__/
 /config.py
 /frontend/docAPI/
+/util/asposeUtil.py
