@@ -25,6 +25,7 @@ class Level(db.Model):
 
     def serialize(self):
         return {
+            'id':self.id,
             'name': self.name,
             'color': self.color,
             'description': self.description,
