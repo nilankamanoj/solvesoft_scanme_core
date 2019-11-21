@@ -27,7 +27,7 @@ class Level(db.Model):
         return {
             'id':self.id,
             'name': self.name,
-            'color': self.color,
+            'color': 'rgb('+self.color+')',
             'description': self.description,
             'is_party': self.is_party,
             'include_level_id': self.include_level_id,
