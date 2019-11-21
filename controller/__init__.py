@@ -97,3 +97,11 @@ def privacy_officer_or_document_creator(f):
         return f(*args, **kwargs)
 
     return decorated_function
+    
+
+def user(f):
+    @wraps(f)
+    @login_manager.jwt_required
+    def decorated_function(*args, **kwargs):
+        return f(*args, **kwargs)
+    return decorated_function

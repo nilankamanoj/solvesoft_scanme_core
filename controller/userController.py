@@ -1,7 +1,8 @@
 from flask import Blueprint
 from flask import request, json, jsonify
+import flask_jwtlogin as jwt
 
-from controller import admin, login_manager
+from controller import admin, login_manager, user
 from service import userService
 
 user_controller = Blueprint('user_controller', __name__)
@@ -38,4 +39,13 @@ def get_token():
     if login_user is not None:
         return jsonify(
             {'authToken': login_manager.generate_jwt_token(login_user.id)['authToken'], 'user': login_user.serialize()})
+    return 'bad credentials', 401
+
+
+@user_controller.route('/auth', methods=['GET'])
+@user
+def get_auth_user():
+    login_user = jwt.current_user
+    if login_user is not None:
+        return login_user.serialize()
     return 'bad credentials', 401
