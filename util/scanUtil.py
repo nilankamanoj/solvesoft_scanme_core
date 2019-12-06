@@ -10,6 +10,7 @@ def get_human_names(text):
     sentt = nltk.ne_chunk(pos_tags, binary=False)
 
     person = []
+    person2 = []
     name = ""
     for subtree in sentt.subtrees(filter=lambda t: t.label() == 'PERSON'):
         for leaf in subtree.leaves():
@@ -20,7 +21,29 @@ def get_human_names(text):
             if name[:-1] not in person_list:
                 person_list.append(name[:-1])
             name = ''
+        elif len(person) > 0:
+            person2.append(person[0])
+
         person = []
+
+    i = 0
+    while len(person2) > i:
+        if len(person2) - 1 == i:
+            person_list.append(person2[i])
+            break
+        else:
+            person = re.findall("[\s]" + person2[i] + "[\s]+" + person2[i + 1] + "[\s]", text)
+            if len(person) > 0:
+                person_list.append(person[0][1:-1])
+                i += 2
+            else:
+                person = re.findall("^" + person2[i] + "[\s]+" + person2[i + 1] + "[\s]", text)
+                if len(person) > 0:
+                    person_list.append(person[0][0:-1])
+                    i += 2
+                else:
+                    person_list.append(person2[i])
+                    i += 1
     return person_list
 
 

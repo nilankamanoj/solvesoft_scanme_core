@@ -22,9 +22,10 @@ def create_file():
         file = request.files['pdfFile']
         filename = random_string()
         file.save(os.path.join(Configuration.UPLOAD_FOLDER, filename + '.pdf'))
-        data = {'data': fileService.extract_data(filename + '.pdf'), 'baseFileName': filename, 'version': 1,
+        page_data, total_word_count, spec_counts = fileService.extract_data(filename + '.pdf')
+        data = {'data': page_data, 'baseFileName': filename, 'version': 1,
                 'current_version': 1,
-                'documentId': document.id, 'scheme': ''}
+                'documentId': document.id, 'scheme': '', 'total_word_count': total_word_count, 'spec_counts':spec_counts}
         return jsonify(data)
     return 'duplicate file name', 400
 

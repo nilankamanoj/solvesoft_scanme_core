@@ -20,11 +20,19 @@ def renamed_loads(pickled_bytes):
     return renamed_load(file_obj)
 
 
-stream_classifier_p = open('util/classifiers/NB_stemmed.pickle', 'rb')
+stream_classifier_p = open('util/classifiers/stream.pickle', 'rb')
 stream_classifier = renamed_load(stream_classifier_p)
+
+spec_classifier_p = open('util/classifiers/spec.pickle', 'rb')
+spec_classifier = renamed_load(spec_classifier_p)
 
 
 def get_stream(txt):
     stream = stream_classifier.predict([txt])
     return stream[0].decode("utf-8")
+
+
+def get_spec(txt):
+    spec = spec_classifier.predict([txt])
+    return spec[0].decode("utf-8")
 

@@ -187,11 +187,18 @@ create table violation
 );
 
 insert into stream
-values (null, 'finance', 'basic financial data that could be sensitive.', null),
-       (null, 'health', 'health related data.', null),
-       (null, 'politics', 'sensitive political information.', null);
+values (1, 'business', 'basic financial data that could be sensitive.', null),
+       (2, 'health', 'health related data.', null),
+       (3, 'politics', 'sensitive political information.', null),
+       (4, 'tech', 'technical information that could be sensitive.', null);
 
 insert into specific_sensitivity
-values (null, 'fraud', 1, 'fraud, finance crime and investigation related data.', null),
-       (null, 'salary', 1, 'employee salary and wages related data.', null),
-       (null, 'investments', 1, 'investment strategies of organization.', null);
+values (1, 'fraud', 1, 'fraud, finance crime and investigation related data.', null),
+       (2, 'salary', 1, 'employee salary and wages related data.', null),
+       (3, 'risk', 1, 'risk analysis information.', null),
+       (4, 'relationship', 1, 'investment/industrial relation strategies of organization.', null),
+       (5, 'health condition', 2, 'health condition of a person.', null),
+       (6, 'prescriptions', 2, 'prescribed treatments.', null),
+       (7, 'union action', 3, 'trade union actions.', null),
+       (8, 'invention', 4, 'new inventions and creations.', null),
+       (9, 'experiments', 4, 'experimental work.', null);
