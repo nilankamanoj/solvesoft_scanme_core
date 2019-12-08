@@ -3,7 +3,13 @@ import os
 import fitz
 
 from config import Configuration
+from model.documentRelease import DocumentRelease
+from model.violation import Violation
+from service.levelService import get_level_by_name
+from service.releaseService import save_release
+from service.violationService import create_violation
 from util.asposeUtil import get_replacer, replace_file
+from service.fileService import get_document_by_name
 
 
 def highlight_pdf(data, scheme):
@@ -49,6 +55,9 @@ def re_arrange_scheme(scheme):
 
 
 def replace(data):
+    exp_names = 0
+    exp_email = 0
+
     replaces = []
     doc = fitz.open(Configuration.UPLOAD_FOLDER + "/" + data['baseFileName'] + ".pdf")
     page_num = 0
@@ -57,18 +66,35 @@ def replace(data):
         sentences = page_data[page_num]['sentences']
         for sentence in sentences:
             if sentence['checked'] and len(sentence['spec']) > 1:
-            # sentence replace
+                # sentence replace
                 continue
             else:
                 for name in sentence['names']:
                     if name['checked']:
                         replaces.append(get_replacer(name['data'], '<person>'))
+                    else:
+                        exp_names += 1
                 for email in sentence['emails']:
                     if email['checked']:
                         replaces.append(get_replacer(email['data'], '<person@email.t>'))
+                    else:
+                        exp_email += 1
 
         for email in page_data[page_num]['emails']:
             if email['checked']:
                 replaces.append(get_replacer(email['data'], '<person@email.t>'))
+            else:
+                exp_email += 1
         page_num += 1
+    level = get_level_by_name(data['release_level'])
+    doc = get_document_by_name(data['name'])
+    dr = DocumentRelease(level.id, doc.id)
+    dr = save_release(dr)
+    if exp_names > 0:
+        v = Violation(release_id=dr.id, description=str(exp_names) + " names were exposed.", checked=False)
+        create_violation(v)
+    if exp_email > 0:
+        v = Violation(release_id=dr.id, description=str(exp_email) + " emails were exposed.", checked=False)
+        create_violation(v)
+
     return replace_file(replaces, data['baseFileName'])

@@ -22,6 +22,10 @@ def get_level_by_name(name):
     return Level.query.filter_by(name=name).first()
 
 
+def get_level(id):
+    return Level.query.filter_by(id=id).first()
+
+
 def get_levels_by_scheme_id(scheme_id):
     levels = Level.query.filter_by(scheme_id=scheme_id).all()
     for level in levels:
