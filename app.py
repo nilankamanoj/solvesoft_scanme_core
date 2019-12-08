@@ -7,6 +7,7 @@ from controller.fileController import file_controller
 from controller.schemeController import scheme_controller
 from controller.streamController import stream_controller
 from controller.userController import user_controller
+from controller.violationController import violation_controller
 from model import db
 
 app = Flask(__name__, static_url_path='', template_folder='frontend', static_folder='frontend')
@@ -20,6 +21,7 @@ app.register_blueprint(user_controller, url_prefix='/user')
 app.register_blueprint(file_controller, url_prefix='/file')
 app.register_blueprint(stream_controller, url_prefix='/stream')
 app.register_blueprint(scheme_controller, url_prefix='/scheme')
+app.register_blueprint(violation_controller, url_prefix='/violation')
 
 
 @app.route('/')

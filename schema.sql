@@ -177,6 +177,7 @@ create table violation
     id           int auto_increment,
     release_id   int                                 not null,
     description  varchar(255)                        not null,
+    checked      bool      default false             not null,
     created_time timestamp default current_timestamp not null,
 
     constraint violation_pk
