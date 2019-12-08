@@ -17,6 +17,11 @@ def extract_data(filename):
     page_num = 0
     word_count_total = 0
     spec_counts = {}
+    name_count = 0
+    email_count = 0
+    telephone_count = 0
+    identity_count = 0
+
     for page in doc:
         data.append({"page": page_num, "sentences": [], "telephones": [], "emails": [], "nics": []})
         all_text = page.getText()
@@ -27,7 +32,9 @@ def extract_data(filename):
             word_count_total += wc
             person_names = get_human_names(sentence)
             sentence_emails = get_emails(sentence)
+            email_count += len(sentence_emails)
             if len(person_names) > 0:
+                name_count += len(person_names)
                 stream = get_stream(sentence)
                 spec = ""
                 if stream == 'business':
@@ -50,7 +57,7 @@ def extract_data(filename):
 
         page_num += 1
 
-    return data, word_count_total, spec_counts
+    return data, word_count_total, spec_counts, name_count, email_count, telephone_count, identity_count
 
 
 def get_documents():
