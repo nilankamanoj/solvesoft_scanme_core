@@ -186,6 +186,21 @@ create table violation
             on update cascade
 );
 
+create table note
+(
+    id           int auto_increment,
+    title        varchar(255)                         not null,
+    content      varchar(255)                         not null,
+    user_id      int                                  not null,
+    created_time timestamp default current_timestamp  not null,
+    constraint note_pk
+        primary key (id),
+    constraint user_id_fk
+        foreign key (user_id) references user (id)
+            on update cascade,
+    
+);
+
 insert into stream
 values (1, 'business', 'basic financial data that could be sensitive.', null),
        (2, 'health', 'health related data.', null),
