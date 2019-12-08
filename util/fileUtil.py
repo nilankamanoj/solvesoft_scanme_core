@@ -3,6 +3,7 @@ import os
 import fitz
 
 from config import Configuration
+from util.asposeUtil import get_replacer, replace_file
 
 
 def highlight_pdf(data, scheme):
@@ -45,3 +46,29 @@ def re_arrange_scheme(scheme):
         for ss in level.specific_sensitivities:
             spec_sensitivities[ss.name] = level.color
     return spec_sensitivities
+
+
+def replace(data):
+    replaces = []
+    doc = fitz.open(Configuration.UPLOAD_FOLDER + "/" + data['baseFileName'] + ".pdf")
+    page_num = 0
+    page_data = data['data']
+    for page in doc:
+        sentences = page_data[page_num]['sentences']
+        for sentence in sentences:
+            if sentence['checked'] and len(sentence['spec']) > 1:
+            # sentence replace
+                continue
+            else:
+                for name in sentence['names']:
+                    if name['checked']:
+                        replaces.append(get_replacer(name['data'], '<person>'))
+                for email in sentence['emails']:
+                    if email['checked']:
+                        replaces.append(get_replacer(email['data'], '<person@email.t>'))
+
+        for email in page_data[page_num]['emails']:
+            if email['checked']:
+                replaces.append(get_replacer(email['data'], '<person@email.t>'))
+        page_num += 1
+    return replace_file(replaces, data['baseFileName'])

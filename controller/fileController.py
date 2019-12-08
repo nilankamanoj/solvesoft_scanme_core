@@ -1,5 +1,6 @@
 import os
 import random
+import shutil
 import string
 
 from flask import Blueprint, request, jsonify, json, send_from_directory
@@ -7,7 +8,7 @@ from flask import Blueprint, request, jsonify, json, send_from_directory
 from config import Configuration
 from controller import document_creator
 from service import fileService, schemeService
-from util.fileUtil import highlight_pdf
+from util.fileUtil import highlight_pdf, replace
 
 file_controller = Blueprint('file_controller', __name__)
 
@@ -46,3 +47,12 @@ def highlight():
 def random_string(string_length=20):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(string_length))
+
+
+@file_controller.route('/cast', methods=['POST'])
+@document_creator
+def cast():
+    data = json.loads(request.data.decode('utf-8'))
+    file = replace(data)
+    shutil.move(file, Configuration.UPLOAD_FOLDER + "/" + data['baseFileName'] + str(data['version']) + '.pdf')
+    return send_from_directory(Configuration.UPLOAD_FOLDER, data['baseFileName'] + str(data['version']) + '.pdf')
