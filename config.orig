@@ -13,7 +13,7 @@ class Configuration:
     JWT_ENCODING_ALGORITHM = 'HS256'
     JWT_LIFETIME = 3600 * 24 * 7
 
-    AUTH_SKIP = True
+    AUTH_SKIP = False
 
     EMAIL_SERVER_EMAIL = "<email>"
     EMAIL_SERVER_PASSWORD = "<emailpass>"
