@@ -195,9 +195,9 @@ create table note
     created_time timestamp default current_timestamp  not null,
     constraint note_pk
         primary key (id),
-    constraint user_id_fk
+    constraint note_user_id_fk
         foreign key (user_id) references user (id)
-            on update cascade,
+            on update cascade
     
 );
 
